@@ -7,8 +7,7 @@
     - Timer-based Waves inside Levels: Each Level has a random number of waves (3 to 5).
     - Waves trigger every 30 seconds, spawning 3 to 7 creatures of the SAME type (Bestiary focus).
     - Dynamic Level Generation: Every 20 HP of a monster equals 1 Level (e.g. 20 HP = Lvl 1, 65 HP = Lvl 4).
-    - Auto Filters: Excludes summons, bosses, harmless fauna (0 XP), and test monsters.
-    - Custom Blacklist: Allows you to manually exclude specific monsters.
+    - 100% Bestiary Accurate: Filters monsters using native getBestiarytoKill() engine check.
     - No resource consumption (Runes & Potions handled in source/potions.lua).
     - Zero death loss (Intercepted via onPrepareDeath).
     - XP Bonus scaling based on current Level (+1% XP per Level).
@@ -43,18 +42,6 @@ local config = {
     toPos = Position(32401, 32200, 7)         -- Arena bottom-right boundary
 }
 
--- ==========================================
--- BLACKLIST DE CRIATURAS (Nome Exato)
--- Adicione aqui os monstros que você NÃO quer que apareçam no Abismo Ecoante:
--- ==========================================
-local monsterBlacklist = {
-    "Animated Skunk",
-    "Demon Goblin",
-    "Dawn Scorpion",
-    "Shredderthrower",
-    -- "Tibia Bug", -- Exemplo de como adicionar mais
-}
-
 -- Tabela global que armazenará as listas de monstros geradas dinamicamente
 local monsterPools = {}
 local activeArenaEvents = {}
@@ -67,77 +54,42 @@ local function initializeMonsterPools()
     end
 
     local loadedCount = 0
-    -- Filtros por palavras-chave em comum no nome do monstro (case-insensitive)
-    local keywordBlacklist = {"boss", "quest", "event", "test", "dummy", "helper", "summon", "minion", "clone", "training", "target", "chest"}
-    
-    -- Transforma a lista negra de nomes exatos em uma tabela de busca rápida
-    local excludedMonsters = {}
-    for _, mName in ipairs(monsterBlacklist) do
-        excludedMonsters[mName:lower()] = true
-    end
-
     local monsterTypes = Game.getMonsterTypes()
 
     if monsterTypes then
         for name, mType in pairs(monsterTypes) do
             local nameStr = mType:getName() or name
             
-            -- Garante compatibilidade caso as funções tenham nomenclaturas ligeiramente diferentes na sua engine
-            local health = mType.getHealth and mType:getHealth() or (mType.getHealthMax and mType:getHealthMax()) or 0
-            local exp = mType.getExperience and mType:getExperience() or 0
+            -- CHECAGEM NATIVA EXATA: getBestiarytoKill (com 't' minúsculo)
+            local isBestiary = false
+            if mType.getBestiarytoKill and mType:getBestiarytoKill() > 0 then
+                isBestiary = true
+            end
 
-            -- Filtros de segurança:
-            -- 1. Deve dar pelo menos 1 de XP (ignora ovelhas, porcos, etc.)
-            -- 2. Deve ter vida maior que 0
-            -- 3. O nome não pode estar vazio e deve começar com letra maiúscula (evita monstros internos)
-            if exp >= 1 and health >= 1 and nameStr ~= "" then
-                local firstChar = nameStr:sub(1,1)
-                if firstChar == firstChar:upper() then
-                    
-                    local isBoss = false
+            if isBestiary then
+                -- Lê os atributos e garante compatibilidade com variações de engines
+                local health = mType.getHealth and mType:getHealth() or (mType.getHealthMax and mType:getHealthMax()) or 0
+                local exp = mType.getExperience and mType:getExperience() or 0
 
-                    -- Se o nome do monstro estiver na nossa blacklist de nomes exatos, marcamos para ignorar
-                    if excludedMonsters[nameStr:lower()] then
-                        isBoss = true
-                    end
-
-                    -- Filtra se for um Boss ou Boss da Bosstiary mapeado no C++
-                    if not isBoss then
-                        if mType.isBoss and mType:isBoss() then isBoss = true end
-                        if mType.isBosstiary and mType:isBosstiary() then isBoss = true end
-                    end
-
-                    -- Filtra por palavras-chave proibidas no nome
-                    if not isBoss then
-                        local nameLower = nameStr:lower()
-                        for _, word in ipairs(keywordBlacklist) do
-                            if nameLower:find(word) then
-                                isBoss = true
-                                break
-                            end
+                -- Filtra apenas criaturas que dão combate (ignora ovelhas/porcos que dão 0 XP)
+                if exp >= 1 and health >= 1 and nameStr ~= "" then
+                    -- FÓRMULA: Cada 20 HP equivale a 1 Level
+                    local calculatedLevel = math.ceil(health / 20)
+                    if calculatedLevel > 0 then
+                        if not monsterPools[calculatedLevel] then
+                            monsterPools[calculatedLevel] = {}
                         end
-                    end
-
-                    -- Se passou por todos os filtros, calcula o nível e adiciona ao pool
-                    if not isBoss then
-                        -- FÓRMULA: Cada 20 HP equivale a 1 Level
-                        local calculatedLevel = math.ceil(health / 20)
-                        if calculatedLevel > 0 then
-                            if not monsterPools[calculatedLevel] then
-                                monsterPools[calculatedLevel] = {}
-                            end
-                            table.insert(monsterPools[calculatedLevel], nameStr)
-                            loadedCount = loadedCount + 1
-                        end
+                        table.insert(monsterPools[calculatedLevel], nameStr)
+                        loadedCount = loadedCount + 1
                     end
                 end
             end
         end
     end
 
-    -- Trava de segurança: Se a carga dinâmica falhou ou retornou 0 por limitações da API da engine, carrega fallbacks clássicos
+    -- Trava de segurança: Caso a carga falhe por alguma limitação da API da engine, carrega fallbacks clássicos
     if loadedCount == 0 then
-        print("[Abismo Ecoante] Warning: Dynamic loading yielded 0 monsters or is not supported. Loading classic fallbacks.")
+        print("[Abismo Ecoante] Warning: Dynamic loading yielded 0 monsters. Loading classic fallbacks.")
         monsterPools[1] = {"Rat", "Cave Rat", "Spider", "Poison Spider"}
         monsterPools[4] = {"Dwarf", "Skeleton", "Ghoul", "Rotworm"}
         monsterPools[10] = {"Cyclops", "Minotaur", "Orc Berserker", "Dwarf Soldier"}
@@ -147,7 +99,7 @@ local function initializeMonsterPools()
         monsterPools[900] = {"Hellflayer", "Vexclaw", "Grimeleech"}
         loadedCount = 25
     else
-        print(string.format("[Abismo Ecoante] Loaded %d bestiary monsters dynamically, categorized into custom difficulty levels.", loadedCount))
+        print(string.format("[Abismo Ecoante] Loaded %d official bestiary monsters dynamically.", loadedCount))
     end
 
     isInitialized = true
