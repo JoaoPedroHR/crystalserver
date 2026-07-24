@@ -533,6 +533,13 @@ function Player:onGainExperience(target, exp, rawExp)
 		end
 	end
 
+	-- Abismo Ecoante (Daily Arena) XP Bonus (+1% XP per LEVEL reached)
+	if self:getStorageValue(50001) == 1 then
+		local currentLevel = math.max(1, self:getStorageValue(50004)) -- 50004 é o STORAGE_CURRENT_LEVEL
+		local arenaBonus = 1 + (currentLevel / 100)
+		exp = math.floor(exp * arenaBonus)
+	end
+
 	-- Forge Stack Bonus
 	local stackBonus = 0
 	if target:getForgeStack() > 0 then

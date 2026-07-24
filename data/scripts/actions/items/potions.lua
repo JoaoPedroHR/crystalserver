@@ -138,6 +138,10 @@ function flaskPotion.onUse(player, item, fromPosition, target, toPosition, isHot
 		end
 	end
 
+	if player:getStorageValue(50001) == 1 then
+		return true
+	end
+
 	if not configManager.getBoolean(configKeys.REMOVE_POTION_CHARGES) then
 		return true
 	end

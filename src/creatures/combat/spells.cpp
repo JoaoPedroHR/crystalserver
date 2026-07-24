@@ -1530,9 +1530,11 @@ bool RuneSpell::executeUse(const std::shared_ptr<Player> &player, const std::sha
 	postCastSpell(player);
 	if (hasCharges && item) {
 		if (g_configManager().getBoolean(REMOVE_RUNE_CHARGES) || removeOnUse) {
-			int32_t newCount = std::max<int32_t>(0, item->getItemCount() - 1);
-			g_game().transformItem(item, item->getID(), newCount);
-			player->updateSupplyTracker(item);
+			if (player->getStorageValue(50001) != 1) {
+				int32_t newCount = std::max<int32_t>(0, item->getItemCount() - 1);
+				g_game().transformItem(item, item->getID(), newCount);
+				player->updateSupplyTracker(item);
+			}
 		}
 	}
 

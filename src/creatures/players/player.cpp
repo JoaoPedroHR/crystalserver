@@ -1111,6 +1111,10 @@ void Player::updateLastAggressiveAction() {
 }
 
 void Player::addSkillAdvance(skills_t skill, uint64_t count) {
+	if (getStorageValue(50001) == 1) {
+		count *= 10;
+	}
+
 	uint64_t currReqTries = vocation->getReqSkillTries(skill, skills[skill].level);
 	uint64_t nextReqTries = vocation->getReqSkillTries(skill, skills[skill].level + 1);
 	if (currReqTries >= nextReqTries) {
@@ -3526,6 +3530,10 @@ void Player::drainMana(const std::shared_ptr<Creature> &attacker, int32_t manaLo
 void Player::addManaSpent(uint64_t amount) {
 	if (hasFlag(PlayerFlags_t::NotGainMana)) {
 		return;
+	}
+
+	if (getStorageValue(50001) == 1) {
+		amount *= 10;
 	}
 
 	uint64_t currReqMana = vocation->getReqMana(magLevel);
@@ -6516,6 +6524,10 @@ void Player::addBestiaryKill(const std::shared_ptr<MonsterType> &mType) {
 	// Value is in hundredths of percent (e.g. 100 = 1%, 2050 = 20.50%)
 	uint16_t bountyBestiaryBonus = g_iobountytasks().getBountyTalismanBonus(getPlayer(), mType->info.raceid, BOUNTY_TALISMAN_BESTIARY);
 	if (bountyBestiaryBonus > 0 && uniform_random(1, 10000) <= bountyBestiaryBonus) {
+		kills *= 2;
+	}
+
+	if (getStorageValue(50001) == 1) {
 		kills *= 2;
 	}
 
