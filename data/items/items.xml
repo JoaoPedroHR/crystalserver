@@ -87583,4 +87583,95 @@
 		<attribute key="description" value="A catalyst used to enhance proficiencies." />
 		<attribute key="weight" value="100" />
 	</item>
+	<!-- STARTER PACK SYSTEM ITEMS -->
+	<!-- Custom Backpacks -->
+	<item id="60001" article="an" name="explorer's backpack">
+		<attribute key="containerSize" value="24" />
+		<attribute key="weight" value="1800" />
+	</item>
+	<item id="60002" article="a" name="hunter's backpack">
+		<attribute key="containerSize" value="28" />
+		<attribute key="weight" value="1800" />
+	</item>
+	<item id="60003" article="a" name="trailblazer's backpack">
+		<attribute key="containerSize" value="32" />
+		<attribute key="weight" value="1800" />
+	</item>
+
+	<!-- Condensed Elixirs -->
+	<item id="60004" article="a" name="condensed health elixir">
+		<attribute key="weight" value="500" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+	</item>
+	<item id="60005" article="a" name="condensed mana elixir">
+		<attribute key="weight" value="500" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+	</item>
+	<item id="60006" article="a" name="condensed strong health elixir">
+		<attribute key="weight" value="600" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+	</item>
+	<item id="60007" article="a" name="condensed strong mana elixir">
+		<attribute key="weight" value="600" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+	</item>
+	<item id="60008" article="a" name="condensed great health elixir">
+		<attribute key="weight" value="700" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+	</item>
+	<item id="60009" article="a" name="condensed great mana elixir">
+		<attribute key="weight" value="700" />
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+	</item>
+
+	<!-- Usables & Consumables -->
+	<item id="60010" article="a" name="feather of lightness">
+		<attribute key="weight" value="10" />
+		<attribute key="description" value="A magical feather. Using it permanently increases your maximum capacity by 100." />
+	</item>
+	<item id="60011" article="a" name="familiar's reset scroll">
+		<attribute key="weight" value="20" />
+		<attribute key="description" value="A sacred scroll. Using it resets your familiar summon exhaustion." />
+	</item>
+	<item id="60012" article="an" name="arcane travel compass">
+		<attribute key="weight" value="500" />
+		<attribute key="description" value="A mysterious device. It allows you to teleport instantly to magic carpets." />
+	</item>
+	<item id="60013" article="a" name="turkey mount cage">
+		<attribute key="weight" value="1000" />
+		<attribute key="description" value="An ornate birdcage. Open it to randomly unlock one of the three turkey mounts." />
+	</item>
+	<item id="60014" article="a" name="class outfit box">
+		<attribute key="weight" value="800" />
+		<attribute key="description" value="A wooden chest. Open it to choose and unlock a class-themed outfit with both addons." />
+	</item>
+	<item id="60015" article="a" name="chest key">
+		<attribute key="weight" value="50" />
+		<attribute key="description" value="An ancient key designed to unlock rare treasure chests." />
+	</item>
+	<item id="60016" article="a" name="hyper xp crystal">
+		<attribute key="weight" value="100" />
+		<attribute key="description" value="A glowing magical crystal. Use it to activate different tiers of experience boosts." />
+	</item>
+
+	<!-- Packs -->
+	<item id="60017" article="an" name="explorer pack">
+		<attribute key="weight" value="2000" />
+		<attribute key="description" value="A heavy chest. Open it to receive your beginner explorer items, including a 24-slot backpack, elixirs, keys, and a feather of lightness." />
+	</item>
+	<item id="60018" article="a" name="hunter pack">
+		<attribute key="weight" value="2500" />
+		<attribute key="description" value="A sturdy chest. Open it to receive your hunter items, including a 28-slot backpack, turkey mount, strong elixirs, keys, and feathers of lightness." />
+	</item>
+	<item id="60019" article="a" name="trailblazer pack">
+		<attribute key="weight" value="3000" />
+		<attribute key="description" value="An ornate chest. Open it to receive ultimate trailblazer items, including a 32-slot backpack, compass, outfit box, great elixirs, and rare scrolls." />
+	</item>
+
 </items>

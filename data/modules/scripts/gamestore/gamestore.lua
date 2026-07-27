@@ -6913,7 +6913,45 @@ GameStore.Categories = {
 			},
 		},
 	},
-}
+	-- ==========================================
+	-- ADICIONADO: CATEGORIA DOS STARTER PACKS
+	-- ==========================================
+	{
+		icons = { "Category_Booster.png" }, -- Ícone da categoria de pacotes na Store
+		name = "Starter Packs",
+		rookgaard = false,
+		state = GameStore.States.STATE_NEW,
+		offers = {
+			{
+				icons = { "Explorer_Pack.png" }, -- Sua imagem personalizada que deve ir na pasta "64" do cliente
+				name = "Explorer Pack",
+				price = 100, -- Preço em Tibia Coins
+				itemtype = 60017, -- ID do Explorer Pack (Baú)
+				count = 1,
+				description = "Perfect for beginners! Contains:\n- 5x Hyper XP Crystals\n- 1x Explorer's Backpack (24 slots)\n- 2x Chest Keys\n- 10x Condensed Mana Elixirs\n- 10x Condensed Health Elixirs\n- 1x Feather of Lightness (+100 Cap)",
+				type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+			},
+			{
+				icons = { "Hunter_Pack.png" },
+				name = "Hunter Pack",
+				price = 250, -- Preço em Tibia Coins
+				itemtype = 60018, -- ID do Hunter Pack (Baú)
+				count = 1,
+				description = "Enhance your hunting speed! Contains:\n- 10x Hyper XP Crystals\n- 1x Hunter's Backpack (28 slots)\n- 2x Chest Keys\n- 10x Condensed Strong Mana Elixirs\n- 10x Condensed Strong Health Elixirs\n- 2x Feathers of Lightness (+200 Cap)\n- 1x Turkey Mount Cage (Unlocks a random turkey mount!)",
+				type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+			},
+			{
+				icons = { "Trailblazer_Pack.png" },
+				name = "Trailblazer Pack",
+				price = 500, -- Preço em Tibia Coins
+				itemtype = 60019, -- ID do Trailblazer Pack (Baú)
+				count = 1,
+				description = "The ultimate starter kit! Contains:\n- 10x Hyper XP Crystals\n- 1x Trailblazer's Backpack (32 slots)\n- 2x Chest Keys\n- 10x Condensed Great Mana Elixirs\n- 10x Condensed Great Health Elixirs\n- 4x Feathers of Lightness (+400 Cap)\n- 1x Turkey Mount Cage\n- 2x Familiar's Reset Scrolls\n- 1x Class Outfit Box (Outfit + both addons)\n- 1x Arcane Travel Compass",
+				type = GameStore.OfferTypes.OFFER_TYPE_ITEM,
+			},
+		},
+	},
+} -- ESSA CHAVE FECHA A TABELA GameStore.Categories
 
 -- Each outfit must be uniquely identified to distinguish between addons.
 -- Here we dynamically assign ids for outfits. These ids must be unique.
