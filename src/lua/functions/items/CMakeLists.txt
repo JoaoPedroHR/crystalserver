@@ -5,4 +5,5 @@ target_sources(${PROJECT_NAME}_lib PRIVATE
     item_functions.cpp
     item_type_functions.cpp
     weapon_functions.cpp
+    forge_functions.cpp
 )

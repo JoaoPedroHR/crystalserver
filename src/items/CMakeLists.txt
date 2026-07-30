@@ -18,4 +18,5 @@ target_sources(${PROJECT_NAME}_lib PRIVATE
     tile.cpp
     trashholder.cpp
     weapons/weapons.cpp
+    forge.cpp
 )

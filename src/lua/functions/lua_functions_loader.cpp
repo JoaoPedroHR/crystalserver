@@ -30,6 +30,7 @@
 #include "lua/functions/creatures/creature_functions.hpp"
 #include "lua/functions/events/events_functions.hpp"
 #include "lua/functions/items/item_functions.hpp"
+#include "lua/functions/items/forge_functions.hpp"
 #include "lua/functions/map/map_functions.hpp"
 #include "lua/functions/core/game/zone_functions.hpp"
 #include "lua/global/lua_variant.hpp"
@@ -51,6 +52,8 @@ void Lua::load(lua_State* L) {
 	ItemFunctions::init(L);
 	MapFunctions::init(L);
 	ZoneFunctions::init(L);
+	// DuskForge functions (forge crafting)
+	DuskForgeFunctions::init(L);
 }
 
 std::string Lua::getErrorDesc(ErrorCode_t code) {
